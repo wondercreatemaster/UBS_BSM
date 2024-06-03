@@ -6,11 +6,12 @@ import transaction from './transaction';
 import activities from './activities';
 import enquiry from './enquiry';
 import print from './print';
+import report from './report';
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [maintenance, transaction, activities, enquiry, print]
+  items: [maintenance, transaction, activities, enquiry, print, report]
 };
 
 export default menuItems;
