@@ -53,7 +53,12 @@ const signin = async (req, res) =>
       if (isMatch && !err)
       {
         // if user is found and password is right create a token
-        let token = jwt.sign(user.toJSON(), config.secret);
+        let token = jwt.sign({
+          email: user.email,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          _id: user._id
+        }, config.secret);
         // return the information including token as JSON
         res.json({ success: true, token: 'Bearer ' + token });
       } else
