@@ -58,7 +58,7 @@ export default function SamplePage()
         />
         <CardContent className='p-[30px]'>
           <Grid container spacing={3} alignItems="flex-start">
-            <Grid container md={4} direction="column" alignItems="flex-end" spacing={1}>
+            <Grid container item md={4} direction="column" alignItems="flex-end" spacing={1}>
 
               <Grid item className='flex items-center gap-x-4'>
                 <Typography>

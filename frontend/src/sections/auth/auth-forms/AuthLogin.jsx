@@ -32,18 +32,21 @@ import { Eye, EyeSlash } from 'iconsax-react';
 
 // ============================|| JWT - LOGIN ||============================ //
 
-export default function AuthLogin({ forgot }) {
+export default function AuthLogin({ forgot })
+{
   const [checked, setChecked] = useState(false);
 
   const { isLoggedIn, login } = useAuth();
   const scriptedRef = useScriptRef();
 
   const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => {
+  const handleClickShowPassword = () =>
+  {
     setShowPassword(!showPassword);
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event) =>
+  {
     event.preventDefault();
   };
 
@@ -51,29 +54,34 @@ export default function AuthLogin({ forgot }) {
     <>
       <Formik
         initialValues={{
-          email: 'info@phoenixcoded.co',
-          password: '123456',
+          email: '',
+          password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) =>
+        {
+          try
+          {
             await login(values.email, values.password);
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-              preload('api/menu/dashboard', fetcher); // load menu on login success
-            }
-          } catch (err) {
+            // if (scriptedRef.current)
+            // {
+            setStatus({ success: true });
+            setSubmitting(false);
+            // preload('api/menu/dashboard', fetcher); // load menu on login success
+            // }
+          } catch (err)
+          {
             console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
+            // if (scriptedRef.current)
+            // {
+            setStatus({ success: false });
+            setErrors({ submit: err.message });
+            setSubmitting(false);
+            // }
           }
         }}
       >

@@ -8,11 +8,11 @@ var UserSchema = new Schema({
     unique: true,
     required: true
   },
-  firstname:{
+  firstname: {
     type: String,
     required: true
   },
-  lastname:{
+  lastname: {
     type: String,
     required: true
   },

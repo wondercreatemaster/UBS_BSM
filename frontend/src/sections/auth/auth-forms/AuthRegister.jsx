@@ -32,27 +32,32 @@ import { Eye, EyeSlash } from 'iconsax-react';
 
 // ============================|| JWT - REGISTER ||============================ //
 
-export default function AuthRegister() {
+export default function AuthRegister()
+{
   const { register } = useAuth();
   const scriptedRef = useScriptRef();
   const navigate = useNavigate();
 
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
-  const handleClickShowPassword = () => {
+  const handleClickShowPassword = () =>
+  {
     setShowPassword(!showPassword);
   };
 
-  const handleMouseDownPassword = (event) => {
+  const handleMouseDownPassword = (event) =>
+  {
     event.preventDefault();
   };
 
-  const changePassword = (value) => {
+  const changePassword = (value) =>
+  {
     const temp = strengthIndicator(value);
     setLevel(strengthColor(temp));
   };
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     changePassword('');
   }, []);
 
@@ -63,7 +68,6 @@ export default function AuthRegister() {
           firstname: '',
           lastname: '',
           email: '',
-          company: '',
           password: '',
           submit: null
         }}
@@ -73,38 +77,44 @@ export default function AuthRegister() {
           email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
           password: Yup.string().max(255).required('Password is required')
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          try {
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) =>
+        {
+          try
+          {
             await register(values.email, values.password, values.firstname, values.lastname);
-            if (scriptedRef.current) {
-              setStatus({ success: true });
-              setSubmitting(false);
-              openSnackbar({
-                open: true,
-                message: 'Your registration has been successfully completed.',
-                variant: 'alert',
+            // if (scriptedRef.current)
+            // {
+            setStatus({ success: true });
+            setSubmitting(false);
+            openSnackbar({
+              open: true,
+              message: 'Your registration has been successfully completed.',
+              variant: 'alert',
 
-                alert: {
-                  color: 'success'
-                }
-              });
+              alert: {
+                color: 'success'
+              }
+            });
 
-              setTimeout(() => {
-                navigate('/login', { replace: true });
-              }, 1500);
-            }
-          } catch (err) {
+            setTimeout(() =>
+            {
+              navigate('/login', { replace: true });
+            }, 1500);
+            // }
+          } catch (err)
+          {
             console.error(err);
-            if (scriptedRef.current) {
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
-            }
+            // if (scriptedRef.current)
+            // {
+            setStatus({ success: false });
+            setErrors({ submit: err.message });
+            setSubmitting(false);
+            // }
           }
         }}
       >
         {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
-          <form noValidate onSubmit={handleSubmit}>
+          <form noValidate onSubmit={handleSubmit} ref={scriptedRef}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={6}>
                 <Stack spacing={1}>
@@ -149,7 +159,7 @@ export default function AuthRegister() {
                   </FormHelperText>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="company-signup">Company</InputLabel>
                   <OutlinedInput
@@ -169,7 +179,7 @@ export default function AuthRegister() {
                     {errors.company}
                   </FormHelperText>
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item xs={12}>
                 <Stack spacing={1}>
                   <InputLabel htmlFor="email-signup">Email Address*</InputLabel>
@@ -203,7 +213,8 @@ export default function AuthRegister() {
                     value={values.password}
                     name="password"
                     onBlur={handleBlur}
-                    onChange={(e) => {
+                    onChange={(e) =>
+                    {
                       handleChange(e);
                       changePassword(e.target.value);
                     }}

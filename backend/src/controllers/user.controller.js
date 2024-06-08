@@ -60,7 +60,7 @@ const signin = async (req, res) =>
           _id: user._id
         }, config.secret);
         // return the information including token as JSON
-        res.json({ success: true, token: 'Bearer ' + token });
+        res.json({ user: user, serviceToken: token });
       } else
       {
         res.status(401).send({ success: false, msg: 'Authentication failed. Wrong password.' });
@@ -69,4 +69,9 @@ const signin = async (req, res) =>
   }
 }
 
-module.exports = { register, signin };
+const myinfo = async (req, res) =>
+{
+  res.json({ user: req.user })
+}
+
+module.exports = { register, signin, myinfo };

@@ -17,23 +17,23 @@ const icons = {
 
 const maintenance = {
   id: 'maintenance',
-  title: <FormattedMessage id="Maintenance" />,
+  title: <FormattedMessage id="maintenance" />,
   type: 'group',
   children: [
     {
       id: 'property',
-      title: <FormattedMessage id="Property" />,
+      title: <FormattedMessage id="property_container" />,
       type: 'collapse',
       children: [
         {
           id: 'unit-property',
-          title: <FormattedMessage id="Property" />,
+          title: <FormattedMessage id="property" />,
           type: "item",
           url: "/maintenance/property",
         },
         {
           id: 'generate-units',
-          title: <FormattedMessage id="Generate Units" />,
+          title: <FormattedMessage id="generate-units" />,
           type: "item",
           url: "/maintenance/generate-units",
         },

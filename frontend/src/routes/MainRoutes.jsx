@@ -19,6 +19,8 @@ const AutoGenerateBilling = Loadable(lazy(() => import('pages/transaction/autoge
 const InvoiceBilling = Loadable(lazy(() => import('pages/transaction/invoicebilling')));
 const Payment = Loadable(lazy(() => import('pages/transaction/payment')));
 
+const Restore = Loadable(lazy(() => import('pages/housekeeping/restore')))
+
 const AppContactUS = Loadable(lazy(() => import('pages/contact-us')));
 // render - sample page
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
@@ -101,6 +103,16 @@ const MainRoutes = {
         {
           path: 'charges',
           element: <Charges />
+        }
+      ]
+    },
+    {
+      path: '/housekeeping',
+      element: <DashboardLayout />,
+      children: [
+        {
+          path: 'restore',
+          element: <Restore />
         }
       ]
     },

@@ -135,13 +135,13 @@ const smb2db = async (req, res) =>
 
     } catch (parseError)
     {
-      console.error('Error processing DBF file:', parseError);
+      // console.error('Error processing DBF file:', parseError);
       return res.status(500).send('Error processing DBF file');
     }
 
   } catch (err)
   {
-    console.error('Error processing file:', err);
+    // console.error('Error processing file:', err);
     return res.status(500).send('Error processing file');
   } finally
   {

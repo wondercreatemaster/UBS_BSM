@@ -9,5 +9,12 @@
   "more-items": "More Items",
   "pages": "Pages",
   "sample-page": "Sample Page",
-  "under-construction": "Under Construction"
+  "under-construction": "Under Construction",
+  "property_container": "Property",
+  "property": "Property",
+  "generate-units": "Generate Units",
+  "housekeeping": "Housekeeping",
+  "backup and restore": "Backup and Restore",
+  "backup": "Backup",
+  "restore": "Restore"
 }

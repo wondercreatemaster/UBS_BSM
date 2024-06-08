@@ -1,26 +1,31 @@
 import axios from 'axios';
 
-const axiosServices = axios.create({ baseURL: import.meta.env.VITE_APP_API_URL || 'http://localhost:3010/' });
+const axiosServices = axios.create({ baseURL: import.meta.env.VITE_APP_API_URL || 'http://localhost:8080/' });
 
 // ==============================|| AXIOS - FOR MOCK SERVICES ||============================== //
 
 axiosServices.interceptors.request.use(
-  async (config) => {
+  async (config) =>
+  {
     const accessToken = localStorage.getItem('serviceToken');
-    if (accessToken) {
+    if (accessToken)
+    {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
     return config;
   },
-  (error) => {
+  (error) =>
+  {
     return Promise.reject(error);
   }
 );
 
 axiosServices.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response.status === 401 && !window.location.href.includes('/login')) {
+  (error) =>
+  {
+    if (error.response.status === 401 && !window.location.href.includes('/login'))
+    {
       window.location.pathname = '/maintenance/500';
     }
     return Promise.reject((error.response && error.response.data) || 'Wrong Services');
@@ -29,7 +34,8 @@ axiosServices.interceptors.response.use(
 
 export default axiosServices;
 
-export const fetcher = async (args) => {
+export const fetcher = async (args) =>
+{
   const [url, config] = Array.isArray(args) ? args : [args];
 
   const res = await axiosServices.get(url, { ...config });
@@ -37,7 +43,8 @@ export const fetcher = async (args) => {
   return res.data;
 };
 
-export const fetcherPost = async (args) => {
+export const fetcherPost = async (args) =>
+{
   const [url, config] = Array.isArray(args) ? args : [args];
 
   const res = await axiosServices.post(url, { ...config });
