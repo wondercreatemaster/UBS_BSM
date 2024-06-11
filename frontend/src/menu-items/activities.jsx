@@ -7,24 +7,24 @@ import { FormattedMessage } from 'react-intl';
 
 const activities = {
 	id: 'activities',
-	title: <FormattedMessage id="Activities" />,
+	title: <FormattedMessage id="activities" />,
 	type: 'group',
 	children: [
 		{
 			id: 'facility-booking',
-			title: <FormattedMessage id="Facility Booking" />,
+			title: <FormattedMessage id="facility-booking" />,
 			type: 'item',
 			url: '/activities/facility-booking',
 		},
-        {
+		{
 			id: 'facility-service-record',
-			title: <FormattedMessage id="Facility Service Record" />,
+			title: <FormattedMessage id="facility-service-record" />,
 			type: 'item',
 			url: '/activities/facility-service-record',
 		},
-        {
+		{
 			id: 'service-request',
-			title: <FormattedMessage id="Service Request" />,
+			title: <FormattedMessage id="service-request" />,
 			type: 'item',
 			url: '/activities/service-request',
 		}

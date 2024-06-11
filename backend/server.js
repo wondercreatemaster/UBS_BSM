@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 global.__basedir = path.resolve(__dirname);
 
 mongoose
-    .connect("mongodb://127.0.0.1:27017/ubsbsm")
+    .connect("mongodb+srv://wondermaker729:WA7iUv11NDhe6N6E@cluster0.vzhepli.mongodb.net/ecobsm")
     .then(() =>
     {
         console.log("DB connected!");
