@@ -23,7 +23,8 @@ import { handlerDrawerOpen, useGetMenuMaster } from 'api/menu';
 
 // ==============================|| MAIN LAYOUT ||============================== //
 
-export default function MainLayout() {
+export default function MainLayout()
+{
   const theme = useTheme();
 
   const { menuMasterLoading } = useGetMenuMaster();
@@ -35,8 +36,10 @@ export default function MainLayout() {
   const isHorizontal = menuOrientation === MenuOrientation.HORIZONTAL && !downLG;
 
   // set media wise responsive drawer
-  useEffect(() => {
-    if (!miniDrawer) {
+  useEffect(() =>
+  {
+    if (!miniDrawer)
+    {
       handlerDrawerOpen(!downXL);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

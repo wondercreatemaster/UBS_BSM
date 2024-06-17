@@ -22,6 +22,14 @@ export default defineConfig({
       {
         find: /^src(.+)/,
         replacement: path.join(process.cwd(), 'src/$1')
+      },
+      {
+        find: 'date-fns/locale',
+        replacement: 'date-fns/esm/locale'
+      },
+      {
+        find: 'date-fns/_lib/format/longFormatters',
+        replacement: 'date-fns/esm/_lib/format/longFormatters'
       }
     ]
   },

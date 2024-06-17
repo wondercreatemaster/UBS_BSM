@@ -7,19 +7,35 @@ import PagesLayout from 'layout/Pages';
 import SimpleLayout from 'layout/Simple';
 import { SimpleLayoutType } from 'config';
 import { element } from 'prop-types';
-import Charges from 'pages/maintenance/charges';
+import { Navigate, Outlet } from 'react-router';
+
+const Dashboard = Loadable(lazy(() => import('pages/dashboard')))
 
 const MaintenanceError = Loadable(lazy(() => import('pages/maintenance/error/404')));
-const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/error/500')));
-const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction/under-construction')));
-const Property = Loadable(lazy(() => import('pages/maintenance/property')));
-const Ownership = Loadable(lazy(() => import('pages/maintenance/ownership')));
+// const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/error/500')));
+// const MaintenanceUnderConstruction = Loadable(lazy(() => import('pages/maintenance/under-construction/under-construction')));
+const Property = Loadable(lazy(() => import('pages/setup/property')));
+const EditProperty = Loadable(lazy(() => import('pages/setup/editproperty')));
+const AddProperty = Loadable(lazy(() => import('pages/setup/addproperty')));
+const GenerateProperty = Loadable(lazy(() => import('pages/setup/generateproperty')));
+
+const Ownership = Loadable(lazy(() => import('pages/setup/ownership')));
+const AddOwner = Loadable(lazy(() => import('pages/setup/addowner')))
+const Charges = Loadable(lazy(() => import('pages/setup/charges')))
 
 const AutoGenerateBilling = Loadable(lazy(() => import('pages/transaction/autogeneratebilling')));
 const InvoiceBilling = Loadable(lazy(() => import('pages/transaction/invoicebilling')));
 const Payment = Loadable(lazy(() => import('pages/transaction/payment')));
+const Invoice = Loadable(lazy(() => import('pages/transaction/invoice')))
 
 const Restore = Loadable(lazy(() => import('pages/housekeeping/restore')))
+
+const Profile = Loadable(lazy(() => import('pages/profile')))
+
+const TabPersonal = Loadable(lazy(() => import('sections/profile/TabPersonal')))
+const TabPayment = Loadable(lazy(() => import('sections/profile/TabPayment')))
+const TabPassword = Loadable(lazy(() => import('sections/profile/TabPassword')))
+const TabSettings = Loadable(lazy(() => import('sections/profile/TabSettings')))
 
 const AppContactUS = Loadable(lazy(() => import('pages/contact-us')));
 // render - sample page
@@ -30,48 +46,108 @@ const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')))
 const MainRoutes = {
   path: '/',
   children: [
+    // {
+    //   path: '/',
+    //   element: <DashboardLayout />,
+    //   children: [
+    //     {
+    //       path: 'sample-page',
+    //       element: <SamplePage />
+    //     }
+    //   ]
+    // },
+    // {
+    //   path: '/',
+    //   element: <SimpleLayout layout={SimpleLayoutType.SIMPLE} />,
+    //   children: [
+    //     {
+    //       path: 'contact-us',
+    //       element: <AppContactUS />
+    //     }
+    //   ]
+    // },
     {
-      path: '/',
+      path: 'dashboard',
       element: <DashboardLayout />,
       children: [
         {
-          path: 'sample-page',
-          element: <SamplePage />
+          path: '',
+          element: <Dashboard />
         }
       ]
     },
     {
-      path: '/',
-      element: <SimpleLayout layout={SimpleLayoutType.SIMPLE} />,
+      path: '/profile',
+      element: <DashboardLayout />,
       children: [
         {
-          path: 'contact-us',
-          element: <AppContactUS />
+          path: '',
+          element: <Profile />,
+          children: [
+            {
+              path: '',
+              element: <Navigate to="personal" />
+            },
+            {
+              path: 'personal',
+              element: <TabPersonal />
+            },
+            {
+              path: 'payment',
+              element: <TabPayment />
+            },
+            {
+              path: 'password',
+              element: <TabPassword />
+            },
+            {
+              path: 'settings',
+              element: <TabSettings />
+            }
+          ]
         }
       ]
     },
     {
-      path: '/maintenance',
+      path: '/setup',
       element: <DashboardLayout />,
       children: [
         {
           path: 'property',
-          element: <Property />
-        },
-        {
-          path: 'generate-units',
-          element: <MaintenanceError500 />
-        },
-        {
-          path: 'delete-generated-units',
-          element: <MaintenanceUnderConstruction />
+          children: [
+            {
+              path: 'edit/:id',
+              element: <EditProperty />
+            },
+            {
+              path: 'add',
+              element: <AddProperty />
+            },
+            {
+              path: 'generate',
+              element: <GenerateProperty />
+            },
+            {
+              path: '',
+              element: <Property />
+            },
+          ]
         },
         {
           path: 'ownership',
-          element: <Ownership />
+          children: [
+            {
+              path: '',
+              element: <Ownership />
+            },
+            {
+              path: 'add',
+              element: <AddOwner />
+            }
+          ]
         },
         {
-          path: 'charges',
+          path: 'tenant',
           element: <Charges />
         }
       ]
@@ -81,28 +157,12 @@ const MainRoutes = {
       element: <DashboardLayout />,
       children: [
         {
-          path: 'invoice-billing',
-          element: <InvoiceBilling />
+          path: 'invoice',
+          element: <Invoice />
         },
         {
-          path: 'auto-generate-billing',
+          path: 'credit-note',
           element: <AutoGenerateBilling />
-        },
-        {
-          path: 'delete-generated-units',
-          element: <MaintenanceUnderConstruction />
-        },
-        {
-          path: 'payment',
-          element: <Payment />
-        },
-        {
-          path: 'ownership',
-          element: <Ownership />
-        },
-        {
-          path: 'charges',
-          element: <Charges />
         }
       ]
     },

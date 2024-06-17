@@ -151,5 +151,7 @@
   "housekeeping": "Housekeeping",
   "backup and restore": "Backup and Restore",
   "backup": "Backup",
-  "restore": "Restore"
+  "restore": "Restore",
+  "setup": "Setup",
+  "dashboard": "Dashboard"
 }

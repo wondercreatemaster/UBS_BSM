@@ -10,16 +10,15 @@ var PropertySchema = new Schema({
   UNITNO: {
     type: String,
     required: true,
+    minlength: [1, "Must Input!"]
   },
   UNITDESP: {
     type: String,
     required: true,
-    default: ""
   },
   UNITTYPE: {
     type: String,
     required: true,
-    default: "",
   },
   OWNERNO: {
     type: String,
@@ -64,11 +63,10 @@ var PropertySchema = new Schema({
   HSECODE: {
     type: String,
     required: true,
-    default: "",
   },
   PHCODE: {
     type: String,
-    default: "",
+    required: true,
   },
   AREA: {
     type: Number,
@@ -95,5 +93,7 @@ PropertySchema.pre('validate', function (next)
   }
   next();
 })
+
+PropertySchema.index({ user: 1, UNITNO: 1 }, { unique: [true, "Same Unit Exist!"] })
 
 module.exports = mongoose.model('Property', PropertySchema);

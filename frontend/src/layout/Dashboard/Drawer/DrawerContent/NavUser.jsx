@@ -41,7 +41,8 @@ const ExpandMore = styled(IconButton, { shouldForwardProp: (prop) => prop !== 't
 
 // ==============================|| LIST - USER ||============================== //
 
-export default function UserList() {
+export default function UserList()
+{
   const theme = useTheme();
   const navigate = useNavigate();
 
@@ -49,15 +50,18 @@ export default function UserList() {
   const drawerOpen = menuMaster.isDashboardDrawerOpened;
 
   const { logout, user } = useAuth();
-  const handleLogout = async () => {
-    try {
+  const handleLogout = async () =>
+  {
+    try
+    {
       await logout();
       navigate(`/login`, {
         state: {
           from: ''
         }
       });
-    } catch (err) {
+    } catch (err)
+    {
       console.error(err);
     }
   };
@@ -65,10 +69,12 @@ export default function UserList() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
@@ -113,12 +119,12 @@ export default function UserList() {
         transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
-        <MenuItem component={Link} to="#" onClick={handleClose}>
+        <MenuItem component={Link} to="/profile" onClick={handleClose}>
           Profile
         </MenuItem>
-        <MenuItem component={Link} to="#" onClick={handleClose}>
+        {/* <MenuItem component={Link} to="#" onClick={handleClose}>
           My account
-        </MenuItem>
+        </MenuItem> */}
       </Menu>
     </Box>
   );

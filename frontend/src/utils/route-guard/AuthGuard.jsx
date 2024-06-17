@@ -7,14 +7,17 @@ import useAuth from 'hooks/useAuth';
 
 // ==============================|| AUTH GUARD ||============================== //
 
-export default function AuthGuard({ children }) {
+export default function AuthGuard({ children })
+{
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      navigate('login', {
+  useEffect(() =>
+  {
+    if (!isLoggedIn)
+    {
+      navigate('/login', {
         state: {
           from: location.pathname
         },

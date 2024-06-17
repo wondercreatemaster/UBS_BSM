@@ -2,10 +2,11 @@ import React, { useEffect, useState } from 'react';
 // material-ui
 import { Add, Close, Delete, Done, Edit, Print, Search } from '@mui/icons-material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Grid, InputBase, Pagination, Paper, TextField, IconButton, CardContent, CardActions, CardHeader, Card, Box, Tab, Select, MenuItem, OutlinedInput, InputAdornment, Button, Fab, CircularProgress } from '@mui/material';
+import { Grid, InputBase, Pagination, Paper, TextField, IconButton, CardContent, CardActions, CardHeader, Card, Box, Tab, Select, MenuItem, OutlinedInput, InputAdornment, Button, Fab, CircularProgress, Input, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Link } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import axiosServices from 'utils/axios';
 import { countries, phases, states, unittypes } from 'utils/domains';
+import { openSnackbar } from 'api/snackbar';
 
 // project-imports
 //import MainCard from 'components/MainCard';
@@ -17,17 +18,24 @@ export default function SamplePage()
   const [currentTab, setCurrentTab] = useState('1');
   const [viewMode, setViewMode] = useState(true);
 
+  const [addMode, setAddMode] = useState(false);
+
   const [property, setProperty] = useState({});
   const [tempProperty, setTempProperty] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [pages, setPages] = useState(1);
 
+  const [deleteConfirmDlg, setDeleteConfirmDlg] = useState(false);
+
   const [isLoading, setIsLoading] = useState(true);
+  const [searchword, setSearchword] = useState("")
+
+  const [createNew, setCreateNew] = useState(false);
 
   useEffect(() =>
   {
     setIsLoading(true)
-    axiosServices.get(`/api/property/${currentPage}`)
+    axiosServices.post(`/api/property/${currentPage}`, { searchword })
       .then(res =>
       {
         if (res.status !== 200)
@@ -38,6 +46,10 @@ export default function SamplePage()
         setProperty(content);
         setTempProperty(content);
         setIsLoading(false)
+      })
+      .catch(err =>
+      {
+
       })
   }, [currentPage])
 
@@ -58,10 +70,53 @@ export default function SamplePage()
     setCurrentTab('1');
   }
 
+  const handleSearchButton = () =>
+  {
+    setIsLoading(true)
+    axiosServices.post(`/api/property/${currentPage}`, { searchword })
+      .then(res =>
+      {
+        if (res.status !== 200)
+          return;
+        const { pages, content } = res.data
+        setPages(pages);
+        // setCurrentPage(currentPage);
+        setProperty(content);
+        setTempProperty(content);
+        setIsLoading(false)
+      })
+  }
+
+  const handleCreateNew = () =>
+  {
+    setCreateNew(true);
+    handleAddButton()
+  }
+
   const handleAddButton = () =>
   {
     setTempProperty(property);
-    setProperty({})
+    setProperty({
+      UNITNO: "",
+      UNITDESP: "",
+      UNITTYPE: "",
+      OWNERNO: "",
+      ADD1: "",
+      ADD2: "",
+      ADD3: "",
+      POSTCODE: "",
+      STATE: "",
+      COUNTRY: "",
+      CARPARK: "",
+      REMARK: "",
+      STATUS: 0,
+      HSECODE: "",
+      PHCODE: "",
+      AREA: 0,
+      SELLINGPRI: 0,
+      PARCELNO: ""
+    })
+    setAddMode(true)
     setViewMode(false);
     setCurrentTab('1');
   }
@@ -72,18 +127,105 @@ export default function SamplePage()
       .then(res =>
       {
         if (res.data.success)
-          setTempProperty(property);
+          setTempProperty(res.data.property);
+        if (res.data.currentPage)
+        {
+          setCurrentPage(res.data.currentPage);
+          openSnackbar({
+            open: true,
+            message: "Successfully Added!",
+            variant: 'alert',
+
+            alert: {
+              color: 'success'
+            }
+          })
+        }
+        else
+        {
+          openSnackbar({
+            open: true,
+            message: "Successfully Updated!",
+            variant: 'alert',
+
+            alert: {
+              color: 'success'
+            }
+          })
+        }
         setViewMode(true)
+        setAddMode(false)
+        setPages(res.data.pages)
       })
       .catch(
-        err => console.log(err)
+        err =>
+        {
+          console.log(err)
+          openSnackbar({
+            open: true,
+            message: err,
+            variant: 'alert',
+
+            alert: {
+              color: 'error'
+            }
+          });
+        }
       )
   }
 
   const handleCloseButton = () =>
   {
+    setCreateNew(false)
     setProperty(tempProperty);
     setViewMode(true);
+    setAddMode(false);
+  }
+
+  const handleDeleteButton = () =>
+  {
+    console.log(property)
+    axiosServices.delete(`/api/property/${property._id}`)
+      .then(res =>
+      {
+        if (res.status == 200)
+        {
+          setDeleteConfirmDlg(false)
+          setIsLoading(true)
+          setPages(res.data.pages);
+          axiosServices.post(`/api/property/${currentPage}`, { searchword })
+            .then(res =>
+            {
+              if (res.status !== 200)
+                return;
+              const { pages, content, currentPage } = res.data
+              if (currentPage)
+                setCurrentPage(currentPage);
+              setProperty(content);
+              setTempProperty(content);
+              setIsLoading(false)
+            })
+          openSnackbar({
+            open: true,
+            message: "Deleted Successfully!",
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            }
+          });
+        }
+      })
+      .catch(err =>
+      {
+        openSnackbar({
+          open: true,
+          message: err,
+          variant: 'alert',
+          alert: {
+            color: 'error'
+          }
+        });
+      })
   }
 
   const handlePropertyChange = (key, value) =>
@@ -101,31 +243,47 @@ export default function SamplePage()
           sx={{ ml: 1, flex: 1 }}
           placeholder="Search Units"
           inputProps={{ 'aria-label': 'search units' }}
+          value={searchword}
+          onChange={e => setSearchword(e.target.value)}
         />
-        <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
+        <IconButton type="button" sx={{ p: '10px' }} aria-label="search" onClick={handleSearchButton}>
           <Search />
         </IconButton>
       </Paper>
 
       <Card>
         <CardHeader
-          title={property ? `Unit No: ${property["UNITNO"]}` : ''}
+          title={property ? (addMode ? 'Create New Unit' : `Unit No: ${property["UNITNO"]}`) : ''}
         />
         {isLoading ?
           <CardContent className='h-[40vh] flex items-center justify-center'>
             <CircularProgress />
           </CardContent> :
-          pages == 0 ?
+          pages == 0 && !createNew ?
             <CardContent className='h-[40vh] flex items-center justify-center'>
               <Typography className='text-3xl'>
-                No Property
+                No Property. <Link component="button" onClick={handleCreateNew}>Click here</Link> to create new record.
               </Typography>
             </CardContent> :
             <>
               <CardContent className='p-[30px]'>
                 <Grid container spacing={3} alignItems="flex-start">
                   <Grid container item md={4} direction="column" alignItems="flex-end" spacing={1}>
-
+                    {
+                      addMode ?
+                        <Grid item className='flex items-center gap-x-4'>
+                          <Typography>
+                            Unit No
+                          </Typography>
+                          <TextField
+                            className='w-[15vw]'
+                            margin='dense'
+                            value={property['UNITNO']}
+                            onChange={e => handlePropertyChange("UNITNO", e.target.value)}
+                          />
+                        </Grid>
+                        : ''
+                    }
                     <Grid item className='flex items-center gap-x-4'>
                       <Typography>
                         Unit Description
@@ -165,7 +323,7 @@ export default function SamplePage()
                         className='w-[15vw]'
                         margin='dense'
                         disabled={viewMode}
-                        onChange={e => handlePropertyChange("HSECODE", e.target, value)}
+                        onChange={e => handlePropertyChange("HSECODE", e.target.value)}
                         value={property["HSECODE"]}
                       >
                         {
@@ -338,9 +496,19 @@ export default function SamplePage()
                     <Fab size='medium' color='info' onClick={handleEditButton}>
                       <Edit />
                     </Fab>
-                    <Fab size='medium' color='error'>
+                    <Fab size='medium' color='error' onClick={() => setDeleteConfirmDlg(true)}>
                       <Delete />
                     </Fab>
+                    <Dialog open={deleteConfirmDlg} onClose={() => setDeleteConfirmDlg(false)}>
+                      <DialogTitle>Confirm</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>Are you sure you want to delete?</DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={() => setDeleteConfirmDlg(false)}>Cancel</Button>
+                        <Button onClick={handleDeleteButton}>Confirm</Button>
+                      </DialogActions>
+                    </Dialog>
                     <Fab size='medium' color='success'>
                       <Print />
                     </Fab>

@@ -1,7 +1,7 @@
 const config = require("../config/key");
 const jwt = require('jsonwebtoken');
 
-const User = require("../models/User.model");
+const User = require("../models/user.model");
 
 const register = async (req, res) =>
 {
