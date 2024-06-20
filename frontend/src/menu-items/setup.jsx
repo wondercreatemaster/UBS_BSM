@@ -13,7 +13,7 @@ const icons = {
   contactus: I24Support,
   property: ArchiveBook,
   ownership: ColorSwatch,
-  tenant: House
+  charges: House
 };
 
 // ==============================|| MENU ITEMS - PAGES ||============================== //
@@ -61,11 +61,12 @@ const setup = {
       breadcrumbs: false
     },
     {
-      id: 'tenant',
-      title: <FormattedMessage id="tenant" />,
+      id: 'charges',
+      title: <FormattedMessage id="charges" />,
       type: 'item',
-      url: '/setup/tenant',
-      icon: icons.tenant
+      url: '/setup/charges',
+      icon: icons.charges,
+      breadcrumbs: false
     },
     // {
     //   id: 'bad-debt',

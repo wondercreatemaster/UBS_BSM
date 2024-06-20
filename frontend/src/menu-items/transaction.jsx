@@ -21,7 +21,8 @@ const transaction = {
 			title: <FormattedMessage id="invoice" />,
 			type: 'item',
 			url: '/transaction/invoice',
-			icon: icons.invoice
+			icon: icons.invoice,
+			breadcrumbs: false
 			// children: [
 			// 	{
 			// 		id: 'invoice-billing',

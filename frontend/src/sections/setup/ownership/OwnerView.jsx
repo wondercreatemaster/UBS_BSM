@@ -8,7 +8,7 @@ import { useTheme } from '@mui/material/styles';
 // project-imports
 import { ImagePath, getImageUrl } from 'utils/getImageUrl';
 import { cities, countries as mapcountries } from 'data/location';
-import { countries, states } from 'utils/domains';
+import { countries, genders, mstatus, ownertypes, premailtypes, states } from 'utils/domains';
 import { ThemeMode } from 'config';
 import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, Grid, IconButton, Paper, Radio, RadioGroup, Tab, Table, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
@@ -36,7 +36,7 @@ export default function OwnerView({ data })
             Unit No
           </Typography>
           <Typography>
-            Unit No
+            {data.UNITNO}
           </Typography>
         </Grid>
 
@@ -45,7 +45,7 @@ export default function OwnerView({ data })
             Unit Description
           </Typography>
           <Typography>
-            Unit Description
+            {data.Property.UNITDESP}
           </Typography>
         </Grid>
 
@@ -54,7 +54,7 @@ export default function OwnerView({ data })
             Phase
           </Typography>
           <Typography>
-            Phase
+            {data.Property.PHCODE}
           </Typography>
         </Grid>
 
@@ -63,7 +63,7 @@ export default function OwnerView({ data })
             House Type
           </Typography>
           <Typography>
-            House Type
+            {data.Property.HSECODE}
           </Typography>
         </Grid>
       </Grid>
@@ -90,14 +90,14 @@ export default function OwnerView({ data })
                     Owned by
                   </Typography>
                   <Typography>
-                    Owned by
+                    {ownertypes[data.OWNEDBY]}
                   </Typography>
 
                   <Typography>
                     Ownership Date
                   </Typography>
                   <Typography>
-                    Ownership Date
+                    {data.OWNDATE.split('T')[0]}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-4 items-center gap-x-5'>
@@ -105,7 +105,7 @@ export default function OwnerView({ data })
                     Owner No.
                   </Typography>
                   <Typography>
-                    Owner No.
+                    {data.OWNERNO}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-4 items-center gap-x-5'>
@@ -121,7 +121,7 @@ export default function OwnerView({ data })
                     Name
                   </Typography>
                   <Typography>
-                    Name
+                    {data.OWNNAME}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-4 items-center gap-x-5'>
@@ -129,14 +129,14 @@ export default function OwnerView({ data })
                     Old IC
                   </Typography>
                   <Typography>
-                    Old IC
+                    {data.OLDIC}
                   </Typography>
 
                   <Typography>
                     New IC
                   </Typography>
                   <Typography>
-                    New IC
+                    {data.NEWIC}
                   </Typography>
 
                 </Grid>
@@ -145,14 +145,14 @@ export default function OwnerView({ data })
                     Passport No.
                   </Typography>
                   <Typography>
-                    Passport No.
+                    {data.PASSPORT}
                   </Typography>
 
                   <Typography>
                     Nationality
                   </Typography>
                   <Typography>
-                    Nationality
+                    {countries[data.NATION]}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -163,21 +163,21 @@ export default function OwnerView({ data })
                   <Typography>Race</Typography>
 
                   <Typography>Gender</Typography>
-                  <Typography>Gender</Typography>
+                  <Typography>{genders[data.GENDER]}</Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-4 items-center gap-x-5'>
                   <Typography>D.O.B</Typography>
-                  <Typography>D.O.B</Typography>
+                  <Typography>{data.DOB?.split('T')[0]}</Typography>
 
                   <Typography>Material Status</Typography>
-                  <Typography>Material Status</Typography>
+                  <Typography>{data.MSTATUS}</Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-4 items-center gap-x-5'>
                   <Typography>Pay Term</Typography>
-                  <Typography>Pay Term</Typography>
+                  <Typography>{data.PAYTERM}</Typography>
 
                   <Typography>Account No.</Typography>
-                  <Typography>Account No.</Typography>
+                  <Typography>{data.ACCOUNTNO}</Typography>
                 </Grid>
                 <Grid item>
                   <FormGroup>
@@ -232,7 +232,7 @@ export default function OwnerView({ data })
                     Preferred Mail Address
                   </Typography>
                   <Typography>
-                    Preferred Mail Address
+                    {premailtypes[data.PREMAILADD]}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -246,13 +246,13 @@ export default function OwnerView({ data })
                   </Typography>
                   <Box className='col-span-5 flex flex-col gap-3'>
                     <Typography>
-                      Address
+                      {data.ADD1}
                     </Typography>
                     <Typography>
-                      Address
+                      {data.ADD2}
                     </Typography>
                     <Typography>
-                      Address
+                      {data.ADD3}
                     </Typography>
                   </Box>
                 </Grid>
@@ -261,21 +261,21 @@ export default function OwnerView({ data })
                     PostCode
                   </Typography>
                   <Typography>
-                    PostCode
+                    {data.POSTCODE}
                   </Typography>
 
                   <Typography>
                     State
                   </Typography>
                   <Typography>
-                    State
+                    {states[data.STATE]}
                   </Typography>
 
                   <Typography>
                     Country
                   </Typography>
                   <Typography>
-                    Country
+                    {countries[data.COUNTRY]}
                   </Typography>
 
                 </Grid>
@@ -284,14 +284,14 @@ export default function OwnerView({ data })
                     (H)Telephone No.
                   </Typography>
                   <Typography>
-                    (H)Telephone No.
+                    {data.HOMETEL}
                   </Typography>
 
                   <Typography>
                     (M)Telephone No.
                   </Typography>
                   <Typography>
-                    (M)Telephone No.
+                    {data.MONTEL}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -302,7 +302,7 @@ export default function OwnerView({ data })
                     Remark
                   </Typography>
                   <Typography>
-                    Remark
+                    {data.Property.REMARK}
                   </Typography>
                 </Grid>
               </Grid>
@@ -314,28 +314,28 @@ export default function OwnerView({ data })
                 Occupation
               </Typography>
               <Typography>
-                Occupation
+                {data.OCCUP}
               </Typography>
 
               <Typography>
                 Employer
               </Typography>
               <Typography>
-                Employer
+                {data.EMPLOYER}
               </Typography>
 
               <Typography>
                 (O) Telephone No.
               </Typography>
               <Typography>
-                (O) Telephone No.
+                {data.OFFTEL}
               </Typography>
 
               <Typography>
                 E-mail
               </Typography>
               <Typography>
-                E-mail
+                {data.EMAIL}
               </Typography>
             </Box>
           </TabPanel>
@@ -347,14 +347,14 @@ export default function OwnerView({ data })
                     Unit Type
                   </Typography>
                   <Typography>
-                    Unit Type
+                    {data.Property.UNITTYPE}
                   </Typography>
 
                   <Typography className='col-start-4'>
                     Area
                   </Typography>
-                  <Typography className='col-start-4'>
-                    Area
+                  <Typography >
+                    {data.Property.AREA} Sq.Feet
                   </Typography>
 
                 </Grid>
@@ -363,7 +363,7 @@ export default function OwnerView({ data })
                     Car Park No(s)
                   </Typography>
                   <Typography>
-                    Car Park No(s)
+                    {data.Property.CARPARK}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-baseline gap-x-5'>
@@ -371,7 +371,7 @@ export default function OwnerView({ data })
                     Remark
                   </Typography>
                   <Typography>
-                    Remark
+                    {data.Property.REMARK}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-baseline gap-x-5'>
@@ -387,7 +387,7 @@ export default function OwnerView({ data })
                     Parcel No
                   </Typography>
                   <Typography>
-                    Parcel No
+                    {data.Property.PARCELNO}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -399,9 +399,9 @@ export default function OwnerView({ data })
                 <Grid item className='grid grid-cols-6 items-baseline gap-x-5'>
                   <Typography>Address</Typography>
                   <Box className='col-span-5 flex flex-col gap-3'>
-                    <Typography>Address</Typography>
-                    <Typography>Address</Typography>
-                    <Typography>Address</Typography>
+                    <Typography>{data.Property.ADD1}</Typography>
+                    <Typography>{data.Property.ADD2}</Typography>
+                    <Typography>{data.Property.ADD3}</Typography>
                   </Box>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-center gap-x-5'>
@@ -409,21 +409,21 @@ export default function OwnerView({ data })
                     PostCode
                   </Typography>
                   <Typography>
-                    PostCode
+                    {data.Property.POSTCODE}
                   </Typography>
 
                   <Typography>
                     State
                   </Typography>
                   <Typography>
-                    State
+                    {data.Property.STATE}
                   </Typography>
 
                   <Typography>
                     Country
                   </Typography>
                   <Typography>
-                    Country
+                    {data.Property.COUNTRY}
                   </Typography>
 
                 </Grid>
@@ -461,9 +461,8 @@ export default function OwnerView({ data })
                 <Grid item className='grid grid-cols-6 items-center gap-3'>
                   <Typography>Soli. Ref No</Typography>
                   <Box className='flex col-span-2 items-center gap-x-3'>
-                    <Typography>Soli. Ref No</Typography>
+                    <Typography>{data.SOLIREFNO}</Typography>
                   </Box>
-                  <Typography>Soli. Ref No</Typography>
                 </Grid>
                 <Grid item>
                   <Typography className='font-bold'>
@@ -472,15 +471,15 @@ export default function OwnerView({ data })
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-center gap-3'>
                   <Typography>Electrical Bill Ref No</Typography>
-                  <Typography>Electrical Bill Ref No</Typography>
+                  <Typography>{data.ELECREFNO}</Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-center gap-3'>
                   <Typography>Gas Bill Ref No</Typography>
-                  <Typography>Gas Bill Ref No</Typography>
+                  <Typography>{data.GASREFNO}</Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-center gap-3'>
                   <Typography>Water Bill Ref No</Typography>
-                  <Typography>Water Bill Ref No</Typography>
+                  <Typography>{data.WATERREFNO}</Typography>
                 </Grid>
               </Grid>
             </Box>
@@ -503,7 +502,7 @@ export default function OwnerView({ data })
                   </Typography>
                   <Box className="col-span-2">
                     <Typography>
-                      Date Move In
+                      {data.MOVEDATE}
                     </Typography>
                   </Box>
                 </Grid>
@@ -521,7 +520,7 @@ export default function OwnerView({ data })
                     Name
                   </Typography>
                   <Typography>
-                    Name
+                    {data.RESNAME}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-center gap-x-5'>
@@ -529,14 +528,14 @@ export default function OwnerView({ data })
                     Old IC
                   </Typography>
                   <Typography>
-                    Old IC
+                    {data.RESOLDIC}
                   </Typography>
 
                   <Typography>
                     New IC
                   </Typography>
                   <Typography>
-                    New IC
+                    {data.RESNEWIC}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-center gap-x-5'>
@@ -544,14 +543,14 @@ export default function OwnerView({ data })
                     Passport No.
                   </Typography>
                   <Typography>
-                    Passport No.
+                    {data.RESPSPORT}
                   </Typography>
 
                   <Typography>
                     Nationality
                   </Typography>
                   <Typography>
-                    Nationality
+                    {countries[data.RESNATION]}
                   </Typography>
 
                 </Grid>
@@ -560,14 +559,14 @@ export default function OwnerView({ data })
                     Race
                   </Typography>
                   <Typography>
-                    Race
+                    {data.RESETHIC}
                   </Typography>
 
                   <Typography>
                     Gender
                   </Typography>
                   <Typography>
-                    Gender
+                    {genders[data.RESGENDER]}
                   </Typography>
 
                 </Grid>
@@ -576,14 +575,14 @@ export default function OwnerView({ data })
                     D.O.B
                   </Typography>
                   <Typography>
-                    D.O.B
+                    {data.RESDOB?.split('T')[0]}
                   </Typography>
 
                   <Typography>
                     Material Status
                   </Typography>
                   <Typography>
-                    Material Status
+                    {mstatus[data.RESMSTATUS]}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-center gap-x-7'>
@@ -591,26 +590,20 @@ export default function OwnerView({ data })
                     (H)Telephone No.
                   </Typography>
                   <Typography>
-                    (H)Telephone No.
+                    {data.RESHOMETEL}
                   </Typography>
 
                   <Typography>
                     (M)Telephone No.
                   </Typography>
                   <Typography>
-                    (M)Telephone No.
+                    {data.RESMOBTEL}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-12 items-center gap-x-7'>
                   <Typography className='col-span-2'>Relationship</Typography>
-                  <FormControl className='col-span-5'>
-                    <RadioGroup defaultValue="Tenant" row>
-                      <FormControlLabel value="Tenant" control={<Radio />} label="Tenant" />
-                      <FormControlLabel value="Relative" control={<Radio />} label="Relative" />
-                      <FormControlLabel value="Others, please state" control={<Radio />} label="Others, please state" />
-                    </RadioGroup>
-                  </FormControl>
-                  <Typography className='col-span-2'>Relationship</Typography>
+
+                  <Typography className='col-span-2'>{data.RELATION}</Typography>
                 </Grid>
                 <Grid item>
                   <Divider />
@@ -665,7 +658,7 @@ export default function OwnerView({ data })
               <Grid container spacing={2} direction='column'>
                 <Grid item className='grid grid-cols-6 items-center gap-x-7'>
                   <Typography>Tenant No.</Typography>
-                  <Typography>Tenant No.</Typography>
+                  <Typography>{data.TENNO}</Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-center gap-x-7'>
                   <Typography>

@@ -74,7 +74,7 @@ export const fuzzyFilter = (row, columnId, value, addMeta) =>
 
 // ==============================|| REACT TABLE - LIST ||============================== //
 
-function ReactTable({ data, columns, rowCount, setPage, setPropertiesPerpage, setSearchword, setPhaseFiltering, setTypeFiltering, phaseFiltering, typeFiltering })
+function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSearchword, setPhaseFiltering, setTypeFiltering, phaseFiltering, typeFiltering })
 {
   const theme = useTheme();
 
@@ -106,7 +106,7 @@ function ReactTable({ data, columns, rowCount, setPage, setPropertiesPerpage, se
   useEffect(() =>
   {
     setPage(pagination.pageIndex + 1);
-    setPropertiesPerpage(pagination.pageSize);
+    setOwnersPerpage(pagination.pageSize);
     setSearchword(globalFilter);
   }, [pagination, globalFilter])
 
@@ -370,22 +370,22 @@ export default function OwnerShip()
   const [page, setPage] = useState(1);
   const [rowCount, setRowCount] = useState(1);
 
-  const [propertiesPerpage, setPropertiesPerpage] = useState(10);
-  const [properties, setProperties] = useState([]);
+  const [ownersPerpage, setOwnersPerpage] = useState(10);
+  const [owners, setOwners] = useState([]);
   const [searchword, setSearchword] = useState("");
 
   const [phaseFiltering, setPhaseFiltering] = useState([]);
   const [typeFiltering, setTypeFiltering] = useState([]);
 
-  const [deleteProperty, setDeleteProperty] = useState({
-    property: {},
+  const [deleteOwner, setDeleteOwner] = useState({
+    owner: {},
     dialog: false
   })
   const navigate = useNavigate();
 
   const handleDelete = () =>
   {
-    axiosServices.delete(`/api/property/${deleteProperty.property._id}`)
+    axiosServices.delete(`/api/owner/${deleteOwner.owner._id}`)
       .then(res =>
       {
         if (res.data.success)
@@ -398,18 +398,18 @@ export default function OwnerShip()
               color: 'success'
             }
           })
-          setDeleteProperty({ ...deleteProperty, dialog: false })
-          axiosServices.post('/api/property/getproperties', { propertiesPerpage, searchword, page, phaseFiltering, typeFiltering })
+          setDeleteOwner({ ...deleteOwner, dialog: false })
+          axiosServices.post('/api/owner/getowners', { ownersPerpage, searchword, page })
             .then(res =>
             {
-              setProperties([...res.data.properties])
-              setRowCount(res.data.totalProperties)
+              setOwners([...res.data.owners])
+              setRowCount(res.data.totalOwners)
             })
         }
       })
       .catch(err =>
       {
-        setDeleteProperty({ ...deleteProperty, dialog: false })
+        setDeleteOwner({ ...deleteOwner, dialog: false })
         openSnackbar({
           open: true,
           message: err,
@@ -425,13 +425,13 @@ export default function OwnerShip()
 
   useEffect(() =>
   {
-    axiosServices.post('/api/property/getproperties', { propertiesPerpage, searchword, page, phaseFiltering, typeFiltering })
+    axiosServices.post('/api/owner/getowners', { ownersPerpage, searchword, page })
       .then(res =>
       {
-        setProperties(res.data.properties)
-        setRowCount(res.data.totalProperties)
+        setOwners(res.data.owners)
+        setRowCount(res.data.totalOwners)
       })
-  }, [page, searchword, propertiesPerpage, phaseFiltering, typeFiltering])
+  }, [page, searchword, ownersPerpage])
 
   const columns = useMemo(
     () => [
@@ -472,41 +472,6 @@ export default function OwnerShip()
         }
       },
       {
-        header: 'Post Code',
-        accessorKey: 'POSTCODE',
-        meta: {
-          className: 'cell-center'
-        }
-      },
-      {
-        header: 'State',
-        accessorKey: 'STATE',
-        meta: {
-          className: 'cell-center'
-        }
-      },
-      {
-        header: 'Country',
-        accessorKey: 'COUNTRY',
-        meta: {
-          className: 'cell-center'
-        }
-      },
-      {
-        header: 'Car Park',
-        accessorKey: 'CARPARK',
-        meta: {
-          className: 'cell-center'
-        }
-      },
-      {
-        header: 'Remark',
-        accessorKey: 'REMARK',
-        meta: {
-          className: 'cell-center'
-        }
-      },
-      {
         header: 'Phase',
         accessorKey: 'PHCODE',
         meta: {
@@ -521,16 +486,8 @@ export default function OwnerShip()
         }
       },
       {
-        header: 'Area',
-        accessorKey: 'AREA',
-        cell: ({ getValue }) => <NumericFormat value={getValue()} displayType="text" thousandSeparator suffix="Sq.Feet" />,
-        meta: {
-          className: 'cell-right'
-        }
-      },
-      {
         header: 'Owner',
-        accessorKey: 'OWNER',
+        accessorKey: 'OWNNAME',
         meta: {
           className: 'cell-right'
         }
@@ -569,8 +526,8 @@ export default function OwnerShip()
                   {
                     e.stopPropagation();
                     console.log(row)
-                    setDeleteProperty({
-                      property: row.original,
+                    setDeleteOwner({
+                      owner: row.original,
                       dialog: true
                     })
                   }}
@@ -591,17 +548,17 @@ export default function OwnerShip()
   return (
     <>
       <Breadcrumbs custom heading="Ownership" links={breadcrumbLinks} />
-      <ReactTable {...{ data: properties, columns, rowCount, setPage, setPropertiesPerpage, setSearchword, setPhaseFiltering, setTypeFiltering, phaseFiltering, typeFiltering }} />
+      <ReactTable {...{ data: owners, columns, rowCount, setPage, setOwnersPerpage, setSearchword, setPhaseFiltering, setTypeFiltering, phaseFiltering, typeFiltering }} />
 
-      <Dialog open={deleteProperty.dialog} onClose={() => setDeleteProperty({ ...deleteProperty, dialog: false })}>
+      <Dialog open={deleteOwner.dialog} onClose={() => setDeleteOwner({ ...deleteOwner, dialog: false })}>
         <DialogTitle>
           Are you sure you want to delete?
         </DialogTitle>
         <DialogContent>
-          By deleting {deleteProperty.property.UNITNO}, Its details will also be removed from Properties.
+          By deleting {deleteOwner.owner.UNITNO}, Its details will also be removed from Owner.
         </DialogContent>
         <DialogActions>
-          <Button variant='contained' onClick={() => setDeleteProperty({ ...deleteProperty, dialog: false })}>Cancel</Button>
+          <Button variant='contained' onClick={() => setDeleteOwner({ ...deleteOwner, dialog: false })}>Cancel</Button>
           <Button variant='contained' color='error' onClick={handleDelete}>Delete</Button>
         </DialogActions>
       </Dialog>

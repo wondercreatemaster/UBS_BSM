@@ -21,12 +21,18 @@ const GenerateProperty = Loadable(lazy(() => import('pages/setup/generatepropert
 
 const Ownership = Loadable(lazy(() => import('pages/setup/ownership')));
 const AddOwner = Loadable(lazy(() => import('pages/setup/addowner')))
-const Charges = Loadable(lazy(() => import('pages/setup/charges')))
+const EditOwner = Loadable(lazy(() => import('pages/setup/editowner')))
+
+
+const Charges = Loadable(lazy(() => import('pages/setup/charges/charges')))
+const AddCharge = Loadable(lazy(() => import('pages/setup/charges/addcharge')))
+const EditCharge = Loadable(lazy(() => import('pages/setup/charges/editcharge')))
 
 const AutoGenerateBilling = Loadable(lazy(() => import('pages/transaction/autogeneratebilling')));
 const InvoiceBilling = Loadable(lazy(() => import('pages/transaction/invoicebilling')));
 const Payment = Loadable(lazy(() => import('pages/transaction/payment')));
-const Invoice = Loadable(lazy(() => import('pages/transaction/invoice')))
+const Invoice = Loadable(lazy(() => import('pages/transaction/invoice/invoice')))
+const AddInvoice = Loadable(lazy(() => import('pages/transaction/invoice/addinvoice')))
 
 const Restore = Loadable(lazy(() => import('pages/housekeeping/restore')))
 
@@ -143,12 +149,29 @@ const MainRoutes = {
             {
               path: 'add',
               element: <AddOwner />
+            },
+            {
+              path: 'edit/:id',
+              element: <EditOwner />
             }
           ]
         },
         {
-          path: 'tenant',
-          element: <Charges />
+          path: 'charges',
+          children: [
+            {
+              path: '',
+              element: <Charges />
+            },
+            {
+              path: 'add',
+              element: <AddCharge />
+            },
+            {
+              path: 'edit/:id',
+              element: <EditCharge />
+            }
+          ]
         }
       ]
     },
@@ -158,7 +181,16 @@ const MainRoutes = {
       children: [
         {
           path: 'invoice',
-          element: <Invoice />
+          children: [
+            {
+              path: '',
+              element: <Invoice />
+            },
+            {
+              path: 'add',
+              element: <AddInvoice />
+            }
+          ]
         },
         {
           path: 'credit-note',

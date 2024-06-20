@@ -185,9 +185,6 @@ const AddProperty = () =>
               className="w-[50%]"
               value={property.POSTCODE}
               onChange={e => setValue("POSTCODE", e.target.value)}
-              InputProps={{
-                inputComponent: NumberFormatCustom,
-              }}
               variant="outlined"
             />
           </Box>

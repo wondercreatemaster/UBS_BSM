@@ -29,7 +29,7 @@ const AddOwner = () =>
     <Breadcrumbs custom heading="Add Owner" links={breadcrumbLinks} />
     <MainCard>
       <Grid container spacing={3} alignItems="baseline" className='w-[90%] m-auto'>
-        <Grid container md={4} direction="column" spacing={1}>
+        {/* <Grid container md={4} direction="column" spacing={1}>
 
           <Grid item className='grid grid-cols-2 items-center gap-x-4'>
             <Typography>
@@ -66,16 +66,16 @@ const AddOwner = () =>
               House Type
             </Typography>
           </Grid>
-        </Grid>
+        </Grid> */}
 
-        <Grid item md={8}>
+        <Grid item md={12}>
           <TabContext value={currentTab}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
               <TabList onChange={handleTabChange} aria-label="lab API tabs example">
                 <Tab label="Property" value="1" />
                 <Tab label="Contact" value="2" />
                 <Tab label="Employment" value="3" />
-                <Tab label="Unit Details" value="4" />
+                {/* <Tab label="Unit Details" value="4" /> */}
                 <Tab label="Financier & etc" value="5" />
                 <Tab label="Residents Profile" value="6" />
                 <Tab label="Verhicle Particulars" value="7" />
