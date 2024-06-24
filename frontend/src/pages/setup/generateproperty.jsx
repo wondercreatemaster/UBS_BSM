@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 
 import Breadcrumbs from "components/@extended/Breadcrumbs";
 import { APP_DEFAULT_PATH } from "config";
 import { useNavigate } from "react-router";
 import MainCard from "components/MainCard";
-import { Box, Button, Divider, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, OutlinedInput, Radio, RadioGroup, Select, TextField, Typography } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider, FormControl, FormControlLabel, FormLabel, Grid, MenuItem, OutlinedInput, Radio, RadioGroup, Select, TextField, Typography } from "@mui/material";
 import { countries, phases, states, unittypes } from "utils/domains";
 import { NumericFormat } from "react-number-format";
 import axiosServices from "utils/axios";
@@ -13,16 +13,14 @@ import { openSnackbar } from "api/snackbar";
 import { SpecChar, WithCharFloorNo, WithNumFloorNo, WithoutFloorNo } from "sections/setup/property/GeneratePropertyForm";
 
 const NumberFormatCustom = React.forwardRef(
-  function NumberFormatCustom(props, ref)
-  {
+  function NumberFormatCustom(props, ref) {
     const { onChange, ...other } = props;
 
     return (
       <NumericFormat
         {...other}
         getInputRef={ref}
-        onValueChange={(values) =>
-        {
+        onValueChange={(values) => {
           onChange({
             target: {
               name: props.name,
@@ -42,27 +40,35 @@ NumberFormatCustom.propTypes = {
   onChange: PropTypes.func.isRequired,
 };
 
-const GenerateProperty = () =>
-{
+const GenerateProperty = () => {
   const navigate = useNavigate();
+
+  const [confirmDlg, setConfirmDlg] = useState(false)
+
   const [property, setProperty] = useState({});
 
   const [generateMethod, setGenerateMethod] = useState("with_num_floor_no");
 
   let breadcrumbLinks = [{ title: 'Home', to: APP_DEFAULT_PATH }, { title: 'Property', to: '/setup/property' }, { title: 'Generate' }];
 
-  const setValue = (key, value) =>
-  {
+  const setValue = (key, value) => {
     setProperty({ ...property, [key]: value })
   }
 
-  const handleSubmit = () =>
-  {
-    axiosServices.put('/api/property/modify', property)
-      .then(res =>
-      {
-        if (res.data.success)
-        {
+  const [UNITNOs, setUNITNOs] = useState([]);
+
+  const [existUNITNOs, setExistUNITNOs] = useState([]);
+
+  useEffect(() => {
+    axiosServices.get('/api/property/getunitnos')
+      .then(res => setExistUNITNOs(res.data.UNITNOs))
+      .catch(err => console.log(err))
+  }, [])
+
+  const handleSubmit = () => {
+    axiosServices.put('/api/property/generate', { property_details: property, UNITNOs })
+      .then(res => {
+        if (res.data.success) {
           openSnackbar({
             open: true,
             message: "Successfully Added!",
@@ -75,8 +81,7 @@ const GenerateProperty = () =>
           navigate('/setup/property')
         }
       })
-      .catch(err =>
-      {
+      .catch(err => {
         console.log(err)
         openSnackbar({
           open: true,
@@ -233,6 +238,7 @@ const GenerateProperty = () =>
         <Grid item md={12}>
           <Divider />
         </Grid>
+
         <Grid item md={3}>
           <Box className="p-5 border-2 border-dashed">
             <FormControl>
@@ -253,18 +259,16 @@ const GenerateProperty = () =>
         </Grid>
         <Grid item md={8}>
           {
-            (() =>
-            {
-              switch (generateMethod)
-              {
+            (() => {
+              switch (generateMethod) {
                 case "with_num_floor_no":
-                  return <WithNumFloorNo />
+                  return <WithNumFloorNo setUNITNOs={setUNITNOs} />
                 case "with_char_floor_no":
-                  return <WithCharFloorNo />
+                  return <WithCharFloorNo setUNITNOs={setUNITNOs} />
                 case "without_floor_no":
-                  return <WithoutFloorNo />
+                  return <WithoutFloorNo setUNITNOs={setUNITNOs} />
                 case "spec_char":
-                  return <SpecChar />
+                  return <SpecChar setUNITNOs={setUNITNOs} />
               }
             })()
           }
@@ -272,7 +276,22 @@ const GenerateProperty = () =>
         <Grid item md={12}>
           <Box className="row-start-6 flex items-center justify-end gap-2 ">
             <Button variant="contained" color="inherit" onClick={() => navigate('/setup/property')}>Cancel</Button>
-            <Button variant="contained" onClick={handleSubmit}>Submit</Button>
+            <Button variant="contained" onClick={() => setConfirmDlg(true)}>Submit</Button>
+
+            <Dialog open={confirmDlg} onClose={() => setConfirmDlg(false)}>
+              <DialogTitle>
+                Generate Multiple Unit No
+              </DialogTitle>
+              <DialogContent>
+                {
+                  UNITNOs.length > 0 && UNITNOs.map(UNITNO => <Typography key={UNITNO}>{UNITNO} {existUNITNOs.includes(UNITNO) && "- already exist!"}</Typography>)
+                }
+              </DialogContent>
+              <DialogActions>
+                <Button variant="contained" color="inherit" onClick={() => setConfirmDlg(false)}>Close</Button>
+                <Button variant="contained" onClick={handleSubmit}>Confirm</Button>
+              </DialogActions>
+            </Dialog>
           </Box>
         </Grid>
       </Grid>

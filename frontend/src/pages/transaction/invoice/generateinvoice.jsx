@@ -2,13 +2,18 @@ import { Search } from "@mui/icons-material"
 import { Box, Button, Card, CardContent, Checkbox, Divider, FormControlLabel, Grid, IconButton, MenuItem, Select, TextField, Typography } from "@mui/material"
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
+import Breadcrumbs from "components/@extended/Breadcrumbs"
+import MainCard from "components/MainCard"
+import { APP_DEFAULT_PATH } from "config"
 
 
-const AutoGenerateBilling = () =>
-{
+const GenerateInvoice = () => {
+  let breadcrumbLinks = [{ title: 'Home', to: APP_DEFAULT_PATH }, { title: 'Invoice', to: '/transaction/invoice' }, { title: 'Generate Invoice' }];
+
   return (
-    <Card>
-      <CardContent className='p-[30px]'>
+    <>
+      <Breadcrumbs custom heading="Generate Invoice" links={breadcrumbLinks} />
+      <MainCard>
         <Grid container direction="column" spacing={1}>
           <Grid item>
             <Typography className="font-bold">Choose which scheme setting to use</Typography>
@@ -151,15 +156,15 @@ const AutoGenerateBilling = () =>
           <Grid item className="flex items-center justify-between">
             <Button variant="contained">Check Failure List</Button>
             <Box className='flex items-center gap-x-3'>
-                <Button variant="contained">Process</Button>
-                <Button variant="contained">Clear</Button>
-                <Button variant="contained">Close</Button>
+              <Button variant="contained">Process</Button>
+              <Button variant="contained">Clear</Button>
+              <Button variant="contained">Close</Button>
             </Box>
           </Grid>
         </Grid>
-      </CardContent>
-    </Card>
+      </MainCard>
+    </>
   )
 }
 
-export default AutoGenerateBilling
+export default GenerateInvoice

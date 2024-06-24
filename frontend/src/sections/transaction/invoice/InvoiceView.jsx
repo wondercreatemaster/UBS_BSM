@@ -2,8 +2,7 @@ import { Box, Checkbox, Divider, FormControlLabel, Grid, Typography } from "@mui
 import { chargecodetypes } from "utils/domains";
 import formatDate from "utils/formatDate";
 
-const InvoiceView = ({ data }) =>
-{
+const InvoiceView = ({ data }) => {
   return <Grid container direction="column" className="p-5" spacing={3} >
     <Grid item className="grid grid-cols-8">
       <Typography className="text-xl">Invoice No</Typography>
@@ -34,7 +33,7 @@ const InvoiceView = ({ data }) =>
       </Box>
       <Box className="col-span-2 grid grid-cols-2 gap-3 border border-1 p-4">
         <Typography>Doc Date</Typography>
-        <Typography>{formatDate(data.INTDATE)}</Typography>
+        <Typography>{formatDate(data.INVDATE)}</Typography>
 
         <Typography>Pay Term</Typography>
         <Typography>{data.PAYTERM}</Typography>

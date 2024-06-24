@@ -21,8 +21,7 @@ import capitalize from '@mui/utils/capitalize';
 
 // third-party
 import { NumericFormat } from 'react-number-format';
-import
-{
+import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -39,8 +38,7 @@ import MainCard from 'components/MainCard';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 import OwnerView from 'sections/setup/ownership/OwnerView';
-import
-{
+import {
   DebouncedInput,
   HeaderSort,
   IndeterminateCheckbox,
@@ -60,8 +58,7 @@ import { Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormContro
 import { openSnackbar } from 'api/snackbar';
 import { phases, unittypes } from 'utils/domains';
 
-export const fuzzyFilter = (row, columnId, value, addMeta) =>
-{
+export const fuzzyFilter = (row, columnId, value, addMeta) => {
   // rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
 
@@ -74,8 +71,7 @@ export const fuzzyFilter = (row, columnId, value, addMeta) =>
 
 // ==============================|| REACT TABLE - LIST ||============================== //
 
-function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSearchword, setPhaseFiltering, setTypeFiltering, phaseFiltering, typeFiltering })
-{
+function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSearchword, setPhaseFiltering, setTypeFiltering, phaseFiltering, typeFiltering }) {
   const theme = useTheme();
 
   const [columnState, setColumnState] = useState([])
@@ -83,8 +79,7 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setPhaseFiltering([...Object.keys(phases)]);
     setTypeFiltering([...Object.keys(unittypes)]);
     setColumnState([...columns])
@@ -103,8 +98,7 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setPage(pagination.pageIndex + 1);
     setOwnersPerpage(pagination.pageSize);
     setSearchword(globalFilter);
@@ -140,8 +134,7 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
   const backColor = alpha(theme.palette.primary.lighter, 0.1);
   const [headers, setHeaders] = useState([]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setHeaders([])
     columnState.map(
       (columns) =>
@@ -157,8 +150,7 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
 
   const navigate = useNavigate();
 
-  const handleAddOwner = () =>
-  {
+  const handleAddOwner = () => {
     navigate('/setup/ownership/add');
   };
 
@@ -173,12 +165,10 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
     },
   };
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -191,15 +181,14 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
           placeholder={`Search ${rowCount} records...`}
         />
 
-        <FormControl sx={{ m: 1, width: 200 }}>
+        {/* <FormControl sx={{ m: 1, width: 200 }}>
           <InputLabel id="demo-multiple-checkbox-label">Phase</InputLabel>
           <Select
             labelId="demo-multiple-checkbox-label"
             id="demo-multiple-checkbox"
             multiple
             value={phaseFiltering}
-            onChange={e =>
-            {
+            onChange={e => {
               setPhaseFiltering(e.target.value)
             }}
             input={<OutlinedInput label="Phase" />}
@@ -222,8 +211,7 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
             id="demo-multiple-checkbox"
             multiple
             value={typeFiltering}
-            onChange={e =>
-            {
+            onChange={e => {
               setTypeFiltering(e.target.value)
             }}
             input={<OutlinedInput label="Type" />}
@@ -237,7 +225,7 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
               </MenuItem>
             ))}
           </Select>
-        </FormControl>
+        </FormControl> */}
 
         <Stack direction="row" spacing={1} alignItems="center">
           {/* <SelectColumnSorting {...{ getState: table.getState, getAllColumns: table.getAllColumns, setSorting }} /> */}
@@ -258,12 +246,10 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
               'aria-labelledby': 'basic-button',
             }}
           >
-            {columns.map(column =>
-            {
+            {columns.map(column => {
               if (column.id != "Row Selection" && column.header != "Actions")
                 return (
-                  <MenuItem key={column.header} onClick={() =>
-                  {
+                  <MenuItem key={column.header} onClick={() => {
                     if (columnState.filter(item => item.header == column.header).length > 0)
                       setColumnState([...columnState.filter(item => item.header != column.header)])
                     else
@@ -290,10 +276,8 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
               <TableHead>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) =>
-                    {
-                      if (header.column.columnDef.meta !== undefined && header.column.getCanSort())
-                      {
+                    {headerGroup.headers.map((header) => {
+                      if (header.column.columnDef.meta !== undefined && header.column.getCanSort()) {
                         Object.assign(header.column.columnDef.meta, {
                           className: header.column.columnDef.meta.className + ' cursor-pointer prevent-select'
                         });
@@ -365,8 +349,7 @@ function ReactTable({ data, columns, rowCount, setPage, setOwnersPerpage, setSea
 
 // ==============================|| PRODUCT LIST ||============================== //
 
-export default function OwnerShip()
-{
+export default function OwnerShip() {
   const [page, setPage] = useState(1);
   const [rowCount, setRowCount] = useState(1);
 
@@ -383,13 +366,10 @@ export default function OwnerShip()
   })
   const navigate = useNavigate();
 
-  const handleDelete = () =>
-  {
+  const handleDelete = () => {
     axiosServices.delete(`/api/owner/${deleteOwner.owner._id}`)
-      .then(res =>
-      {
-        if (res.data.success)
-        {
+      .then(res => {
+        if (res.data.success) {
           openSnackbar({
             open: true,
             message: "Successfully Deleted!",
@@ -400,15 +380,13 @@ export default function OwnerShip()
           })
           setDeleteOwner({ ...deleteOwner, dialog: false })
           axiosServices.post('/api/owner/getowners', { ownersPerpage, searchword, page })
-            .then(res =>
-            {
+            .then(res => {
               setOwners([...res.data.owners])
               setRowCount(res.data.totalOwners)
             })
         }
       })
-      .catch(err =>
-      {
+      .catch(err => {
         setDeleteOwner({ ...deleteOwner, dialog: false })
         openSnackbar({
           open: true,
@@ -423,11 +401,9 @@ export default function OwnerShip()
       )
   }
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     axiosServices.post('/api/owner/getowners', { ownersPerpage, searchword, page })
-      .then(res =>
-      {
+      .then(res => {
         setOwners(res.data.owners)
         setRowCount(res.data.totalOwners)
       })
@@ -469,6 +445,9 @@ export default function OwnerShip()
         accessorKey: 'UNITDESP',
         meta: {
           className: 'cell-center'
+        },
+        cell: ({ row }) => {
+          return row.original.Property.UNITDESP
         }
       },
       {
@@ -476,6 +455,9 @@ export default function OwnerShip()
         accessorKey: 'PHCODE',
         meta: {
           className: 'cell-center'
+        },
+        cell: ({ row }) => {
+          return row.original.Property.PHCODE
         }
       },
       {
@@ -483,6 +465,9 @@ export default function OwnerShip()
         accessorKey: 'UNITTYPE',
         meta: {
           className: 'cell-center'
+        },
+        cell: ({ row }) => {
+          return row.original.Property.UNITTYPE
         }
       },
       {
@@ -497,8 +482,7 @@ export default function OwnerShip()
         meta: {
           className: 'cell-center'
         },
-        cell: ({ row }) =>
-        {
+        cell: ({ row }) => {
           const collapseIcon = row.getCanExpand() && row.getIsExpanded() ? <Add style={{ transform: 'rotate(45deg)' }} /> : <Eye />;
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
@@ -510,8 +494,7 @@ export default function OwnerShip()
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
-                  onClick={(e) =>
-                  {
+                  onClick={(e) => {
                     navigate(`/setup/ownership/edit/${row.original._id}`)
                     e.stopPropagation();
                   }}
@@ -522,8 +505,7 @@ export default function OwnerShip()
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
-                  onClick={(e) =>
-                  {
+                  onClick={(e) => {
                     e.stopPropagation();
                     console.log(row)
                     setDeleteOwner({

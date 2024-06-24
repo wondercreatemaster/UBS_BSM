@@ -5,12 +5,10 @@ import { Add, Close, Delete, Done, Edit, Print } from "@mui/icons-material";
 import TextMaskCustom from "components/AccountNoInput";
 import { calcmethods, carparktypes, intervaltypes, metercalcs, metertypes, status } from "utils/domains";
 
-const ChargeView = ({ data }) =>
-{
+const ChargeView = ({ data }) => {
   const [currentTab, setCurrentTab] = useState('1');
 
-  const handleTabChange = (event, newValue) =>
-  {
+  const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
   };
 
@@ -38,10 +36,8 @@ const ChargeView = ({ data }) =>
             <Grid item className="grid grid-cols-3 items-center">
               <Typography>Charge by</Typography>
               <Typography>Value {
-                (() =>
-                {
-                  switch (data.CALMETHOD)
-                  {
+                (() => {
+                  switch (data.CALMETHOD) {
                     case 1: return 'per area measurement';
                     case 3: return 'per metered unit';
                     case 5: return 'per selling price';
@@ -99,7 +95,7 @@ const ChargeView = ({ data }) =>
                 Tax Percentage
               </Typography>
               <Typography>
-                {data.TAXPER} %
+                {data.TAXPER && `${data.TAXPER} %`}
               </Typography>
             </Grid>
             <Grid item>
@@ -131,7 +127,7 @@ const ChargeView = ({ data }) =>
               <Typography>{data.LATECHAR == 1 ? "Yes" : "No"}</Typography>
             </Grid>
             <Grid item>
-              <FormControlLabel control={<Checkbox />} label="Define Own Late Interest Rate" />
+              <FormControlLabel control={<Checkbox checked={data.DEFLATEINT} />} label="Define Own Late Interest Rate" />
             </Grid>
             <Grid item>
               <Typography className="font-bold">Monthly Statement Settings</Typography>

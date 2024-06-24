@@ -21,8 +21,7 @@ import capitalize from '@mui/utils/capitalize';
 
 // third-party
 import { NumericFormat } from 'react-number-format';
-import
-{
+import {
   flexRender,
   getCoreRowModel,
   getSortedRowModel,
@@ -38,8 +37,7 @@ import ScrollX from 'components/ScrollX';
 import MainCard from 'components/MainCard';
 import IconButton from 'components/@extended/IconButton';
 import InvoiceView from 'sections/transaction/invoice/InvoiceView';
-import
-{
+import {
   DebouncedInput,
   HeaderSort,
   IndeterminateCheckbox,
@@ -59,8 +57,7 @@ import { openSnackbar } from 'api/snackbar';
 import { calcmethods, chargecodetypes, phases, status, unittypes } from 'utils/domains';
 import formatDate from 'utils/formatDate';
 
-export const fuzzyFilter = (row, columnId, value, addMeta) =>
-{
+export const fuzzyFilter = (row, columnId, value, addMeta) => {
   // rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
 
@@ -73,8 +70,7 @@ export const fuzzyFilter = (row, columnId, value, addMeta) =>
 
 // ==============================|| REACT TABLE - LIST ||============================== //
 
-function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setSearchword })
-{
+function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setSearchword }) {
   const theme = useTheme();
 
   const [columnState, setColumnState] = useState([])
@@ -82,8 +78,7 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setColumnState([...columns])
   }, [])
 
@@ -100,8 +95,7 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
   const [rowSelection, setRowSelection] = useState({});
   const [globalFilter, setGlobalFilter] = useState('');
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setPage(pagination.pageIndex + 1);
     setInvoicesPerPage(pagination.pageSize);
     setSearchword(globalFilter);
@@ -137,8 +131,7 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
   const backColor = alpha(theme.palette.primary.lighter, 0.1);
   const [headers, setHeaders] = useState([]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setHeaders([])
     columnState.map(
       (columns) =>
@@ -154,10 +147,13 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
 
   const navigate = useNavigate();
 
-  const handleAddInvoice = () =>
-  {
+  const handleAddInvoice = () => {
     navigate('/transaction/invoice/add');
   };
+
+  const handleGenerateInvoice = () => {
+    navigate('/transaction/invoice/generate')
+  }
 
 
   const ITEM_HEIGHT = 48;
@@ -171,12 +167,10 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
     },
   };
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -208,12 +202,10 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
               'aria-labelledby': 'basic-button',
             }}
           >
-            {columns.map(column =>
-            {
+            {columns.map(column => {
               if (column.id != "Row Selection" && column.header != "Actions")
                 return (
-                  <MenuItem key={column.header} onClick={() =>
-                  {
+                  <MenuItem key={column.header} onClick={() => {
                     if (columnState.filter(item => item.header == column.header).length > 0)
                       setColumnState([...columnState.filter(item => item.header != column.header)])
                     else
@@ -230,7 +222,7 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
           <Button variant="contained" startIcon={<Add />} onClick={handleAddInvoice} size="large">
             Add Invoice
           </Button>
-          <Button variant='contained' size='large'>
+          <Button variant='contained' size='large' onClick={handleGenerateInvoice}>
             Generate
           </Button>
         </Stack>
@@ -243,10 +235,8 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
               <TableHead>
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) =>
-                    {
-                      if (header.column.columnDef.meta !== undefined && header.column.getCanSort())
-                      {
+                    {headerGroup.headers.map((header) => {
+                      if (header.column.columnDef.meta !== undefined && header.column.getCanSort()) {
                         Object.assign(header.column.columnDef.meta, {
                           className: header.column.columnDef.meta.className + ' cursor-pointer prevent-select'
                         });
@@ -318,8 +308,7 @@ function ReactTable({ data, columns, rowCount, setPage, setInvoicesPerPage, setS
 
 // ==============================|| PRODUCT LIST ||============================== //
 
-export default function Invoice()
-{
+export default function Invoice() {
   const [page, setPage] = useState(1);
   const [rowCount, setRowCount] = useState(1);
 
@@ -336,13 +325,10 @@ export default function Invoice()
   })
   const navigate = useNavigate();
 
-  const handleDelete = () =>
-  {
+  const handleDelete = () => {
     axiosServices.delete(`/api/invoice/${deleteInvoice.invoice._id}`)
-      .then(res =>
-      {
-        if (res.data.success)
-        {
+      .then(res => {
+        if (res.data.success) {
           openSnackbar({
             open: true,
             message: "Successfully Deleted!",
@@ -353,15 +339,13 @@ export default function Invoice()
           })
           setDeleteInvoice({ ...deleteInvoice, dialog: false })
           axiosServices.post('/api/invoice/getinvoices', { invoicesPerPage, searchword, page })
-            .then(res =>
-            {
+            .then(res => {
               setInvoices([...res.data.invoices])
               setRowCount(res.data.totalInvoices)
             })
         }
       })
-      .catch(err =>
-      {
+      .catch(err => {
         setDeleteInvoice({ ...deleteInvoice, dialog: false })
         openSnackbar({
           open: true,
@@ -376,11 +360,9 @@ export default function Invoice()
       )
   }
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     axiosServices.post('/api/invoice/getinvoices', { invoicesPerPage, searchword, page })
-      .then(res =>
-      {
+      .then(res => {
         setInvoices(res.data.invoices)
         setRowCount(res.data.totalInvoices)
       })
@@ -473,8 +455,7 @@ export default function Invoice()
         meta: {
           className: 'cell-center'
         },
-        cell: ({ row }) =>
-        {
+        cell: ({ row }) => {
           const collapseIcon = row.getCanExpand() && row.getIsExpanded() ? <Add style={{ transform: 'rotate(45deg)' }} /> : <Eye />;
           return (
             <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
@@ -486,8 +467,7 @@ export default function Invoice()
               <Tooltip title="Edit">
                 <IconButton
                   color="primary"
-                  onClick={(e) =>
-                  {
+                  onClick={(e) => {
                     navigate(`/transaction/invoice/edit/${row.original._id}`)
                     e.stopPropagation();
                   }}
@@ -498,8 +478,7 @@ export default function Invoice()
               <Tooltip title="Delete">
                 <IconButton
                   color="error"
-                  onClick={(e) =>
-                  {
+                  onClick={(e) => {
                     e.stopPropagation();
                     console.log(row)
                     setDeleteInvoice({

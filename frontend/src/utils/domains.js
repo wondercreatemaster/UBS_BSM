@@ -1,3 +1,5 @@
+import axiosServices from "./axios"
+
 export const countries = {
   MY: "Malaysia",
   HK: "Hong Kong",
@@ -104,7 +106,6 @@ export const carparktypes = [
   'Both'
 ]
 
-export const chargecodetypes = {
-  "SERVICE": "SERVICE CHARGES",
-  "SINK": "SINKING FUND"
-}
+let charges = {};
+(await axiosServices.get('/api/charge/getall')).data.charges.map(charge => charges = { ...charges, [charge.CHARCODE]: charge.DESP })
+export const chargecodetypes = charges

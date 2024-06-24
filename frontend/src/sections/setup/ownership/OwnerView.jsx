@@ -13,23 +13,22 @@ import { ThemeMode } from 'config';
 import { Box, Button, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, Grid, IconButton, Paper, Radio, RadioGroup, Tab, Table, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Search } from '@mui/icons-material';
+import formatDate from 'utils/formatDate';
 
 // ==============================|| PRODUCT - VIEW ||============================== //
 
-export default function OwnerView({ data })
-{
+export default function OwnerView({ data }) {
   const theme = useTheme();
 
   const [currentTab, setCurrentTab] = useState('1');
 
-  const handleTabChange = (event, newValue) =>
-  {
+  const handleTabChange = (event, newValue) => {
     setCurrentTab(newValue);
   };
 
   return (
     <Grid container spacing={3} alignItems="baseline" className='w-[90%] m-auto'>
-      <Grid container md={4} direction="column" spacing={1}>
+      <Grid container md={3} direction="column" spacing={1}>
 
         <Grid item className='grid grid-cols-2 items-center gap-x-4'>
           <Typography>
@@ -68,7 +67,7 @@ export default function OwnerView({ data })
         </Grid>
       </Grid>
 
-      <Grid item md={8}>
+      <Grid item md={9}>
         <TabContext value={currentTab}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
             <TabList onChange={handleTabChange} aria-label="lab API tabs example">
@@ -97,7 +96,7 @@ export default function OwnerView({ data })
                     Ownership Date
                   </Typography>
                   <Typography>
-                    {data.OWNDATE.split('T')[0]}
+                    {formatDate(data.OWNDATE)}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-4 items-center gap-x-5'>
@@ -379,7 +378,7 @@ export default function OwnerView({ data })
                     Transfer Date
                   </Typography>
                   <Typography>
-                    Transfer Date
+                    {data.TRANSDATE}
                   </Typography>
                 </Grid>
                 <Grid item className='grid grid-cols-6 items-baseline gap-x-5'>
@@ -416,14 +415,14 @@ export default function OwnerView({ data })
                     State
                   </Typography>
                   <Typography>
-                    {data.Property.STATE}
+                    {states[data.Property.STATE]}
                   </Typography>
 
                   <Typography>
                     Country
                   </Typography>
                   <Typography>
-                    {data.Property.COUNTRY}
+                    {countries[data.Property.COUNTRY]}
                   </Typography>
 
                 </Grid>

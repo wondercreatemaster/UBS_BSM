@@ -28,11 +28,12 @@ const Charges = Loadable(lazy(() => import('pages/setup/charges/charges')))
 const AddCharge = Loadable(lazy(() => import('pages/setup/charges/addcharge')))
 const EditCharge = Loadable(lazy(() => import('pages/setup/charges/editcharge')))
 
-const AutoGenerateBilling = Loadable(lazy(() => import('pages/transaction/autogeneratebilling')));
 const InvoiceBilling = Loadable(lazy(() => import('pages/transaction/invoicebilling')));
 const Payment = Loadable(lazy(() => import('pages/transaction/payment')));
 const Invoice = Loadable(lazy(() => import('pages/transaction/invoice/invoice')))
 const AddInvoice = Loadable(lazy(() => import('pages/transaction/invoice/addinvoice')))
+const EditInvoice = Loadable(lazy(() => import('pages/transaction/invoice/editinvoice')))
+const GenerateInvoice = Loadable(lazy(() => import('pages/transaction/invoice/generateinvoice')));
 
 const Restore = Loadable(lazy(() => import('pages/housekeeping/restore')))
 
@@ -189,13 +190,17 @@ const MainRoutes = {
             {
               path: 'add',
               element: <AddInvoice />
+            },
+            {
+              path: 'generate',
+              element: <GenerateInvoice />
+            },
+            {
+              path: 'edit/:id',
+              element: <EditInvoice />
             }
           ]
         },
-        {
-          path: 'credit-note',
-          element: <AutoGenerateBilling />
-        }
       ]
     },
     {
